@@ -147,22 +147,43 @@ this command is not very useful. use rm instead
 - `rm mydir` removes the directory `mydir` if it is empty
 - `rm -r mydir` removes the directory `mydir` "recursively" (even if it contains directories and/or files
 
-# link
+## `find`
+- `find / -name "host"` lists all files that are exactly named `host` in `/` and its sub directories.
+- `find / -user amy` will find all files created my user "amy" in `/` and its sub directories.
+- `find / -size +100M` finds all files bigger than 100 mb in `/` and its sub directories.
+- `find / -name go -type d` finds all directories in `/` that are named "go".
+- `find ~ -name "go.mod" -exec cp {} /tmp/ \;` find all files named "go.mod" and copies them to `/tmp/`. 
+- Note that `exec` commands always have the structure `find <find instructions> -exec <command...> {} <...command> \;` where `{}` is a placeholder for all the results of `find`. 
+
+# links
 there are *hard* links and *symbolic* (sometimes called *soft*) links.
 
-a file in linux consists of an *inode* (that contains basic data of the file that you will see when you run `ls -l`) and its *blocks* (the actual file data). A name of a file is a *hard link* to the file's inode and a file can have multiple *hard links* and thus names. A *symbolic* link is name that points to a *hard* link.
+a file in linux consists of an *inode* (that contains basic data of the file that you will see when you run `ls -l`) and its *blocks* (the actual file data). A name of a file is a *hard link* to the file's inode and a file can have multiple *hard links* and thus names. Further, a *symbolic* link is a name that points to a *hard* link.
 
-hard links come with to limitations:
-- must be on the same device as the inode.
-- can only point to files, not directories.
+hard links come with two limitations:
+- they must be on the same device as the inode.
+- the can only point to files, not to directories.
 
 ## `ln`
 "link" creates links.
-- `ln myfile.txt myname` creates a *hard link* to `myfile.txt`.
-- if you write changes to `myfile.txt` or or `myname` you will find the changes in the other file as well.
-- if you would delete `myfile.txt` the underlying inode would still exist and you could access it via `myname` or vice versa.
-- `ln -s myfile.txt mysymln` would create a *symbolic link* to `myfile.txt`.
+- `ln myfile.txt myname.txt` creates a *hard link* to `myfile.txt` called `myname.txt`.
+- if you write changes to `myfile.txt` or to `myname.txt` you will find the changes in the respective other file as well.
+- if you delete `myfile.txt` the underlying inode would still exist and you could access it via `myname.txt` or vice versa.
+- `ln -s myfile.txt mysl` would create a *symbolic link* to `myfile.txt` named mysl.
+- BETTER: `ln -s /tmp/myfile.txt somesl`; best practice: use absolute names for *symolic links*. If you move `somesl` it will not break the link. 
 - `ln -s mydir dirsymln` would create a link to the directory `mydir`.
-- BETTER: `ln -s /tmp/myfile somesl` it is a best practice to use absolute names for *symolic links*. If you would move `somesl` it would still work. 
 
-##
+## tar
+"Tape ARchiver"
+ 
+ - `tar -cf myarch.tar /myfile.txt`: `-c` will create a file `-f` lets you specify the name of the new archive file; it will create archive called `myarch.tar` containing the file `myfile.txt`.
+ - `tar -xf myarch.tar` will e**x**tract the **f**ile `myarch.tar` to the current directory.
+ - `tar -xfC myarch.tar ./somedir` will e**x**tract the **f**ile `myarch.tar` to `somedir`.
+ - `tar -tf myarch.tar` will show the content of `myarch.tar`.
+ - add `-Z` to use gzip compression.
+ - add `-J` to use bzip compression.
+ - add `-v` to work verbosely. 
+
+## file
+- `file myfile` will print out a files metadata witch will help you for example to know, what compression type an archive uses. 
+
