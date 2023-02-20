@@ -21,6 +21,10 @@ pw: `pass`
 	- Use this to check if you have the right to write.
 - `last` show the last logins.
 
+## history
+- `hisory` will show you the last commands you used with a number in front.
+- `!<number>` will run repeat the command with the given number.
+
 ## man
 ### how to read
 - `[options]` in brackets are optional
@@ -143,3 +147,22 @@ this command is not very useful. use rm instead
 - `rm mydir` removes the directory `mydir` if it is empty
 - `rm -r mydir` removes the directory `mydir` "recursively" (even if it contains directories and/or files
 
+# link
+there are *hard* links and *symbolic* (sometimes called *soft*) links.
+
+a file in linux consists of an *inode* (that contains basic data of the file that you will see when you run `ls -l`) and its *blocks* (the actual file data). A name of a file is a *hard link* to the file's inode and a file can have multiple *hard links* and thus names. A *symbolic* link is name that points to a *hard* link.
+
+hard links come with to limitations:
+- must be on the same device as the inode.
+- can only point to files, not directories.
+
+## `ln`
+"link" creates links.
+- `ln myfile.txt myname` creates a *hard link* to `myfile.txt`.
+- if you write changes to `myfile.txt` or or `myname` you will find the changes in the other file as well.
+- if you would delete `myfile.txt` the underlying inode would still exist and you could access it via `myname` or vice versa.
+- `ln -s myfile.txt mysymln` would create a *symbolic link* to `myfile.txt`.
+- `ln -s mydir dirsymln` would create a link to the directory `mydir`.
+- BETTER: `ln -s /tmp/myfile somesl` it is a best practice to use absolute names for *symolic links*. If you would move `somesl` it would still work. 
+
+##
