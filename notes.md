@@ -114,13 +114,17 @@ From right to left you will see:
 
 #  `cp` (copy)
  `cp` is used like this 
- ```
- cp source destination
-``` 
-e. g. to copy the content of `/tmp` to where ever you currently are
+
+```bash
+cp source destination
 ```
+
+e. g. to copy the content of `/tmp` to where ever you currently are
+
+```bash
 cp /tmp .
 ```
+
 ## important flags
 - `-R` recursive copy
 
@@ -174,7 +178,7 @@ hard links come with two limitations:
 - `ln -s mydir dirsymln` would create a link to the directory `mydir`.
 
 ## tar
-"Tape ARchiver"
+"**T**ape **AR**chiver"
  
  - `tar -cf myarch.tar /myfile.txt`: `-c` will create a file `-f` lets you specify the name of the new archive file; it will create archive called `myarch.tar` containing the file `myfile.txt`.
  - `tar -xf myarch.tar` will e**x**tract the **f**ile `myarch.tar` to the current directory.
@@ -187,3 +191,86 @@ hard links come with two limitations:
 ## file
 - `file myfile` will print out a files metadata witch will help you for example to know, what compression type an archive uses. 
 
+# text files
+
+## editors
+Just use `vi`.
+
+## pager
+Just use `less`.
+
+## head
+- `head myfile` displays the first 10 lines of `myfile`/
+- `head -n 5 myfile` displays the first 5 lines of a file
+
+## tail
+- `tail myfile` displays the last 10 lines of the file `myfile`.
+- `tail -n 5 myfile` displays the last 5 lines of the file `myfile`.
+- `tail -f mylog` will displays the last 10 lines of a file and will also **f**ollow any changes that are written to the bottom of the file. `ctrl+c` to exit. 
+
+## cat
+- `cat myfile` dumps the content of `myfile` into console. 
+- `cat -A myfile` dumps the content of `myfile` into console and displays not-printable characters. 
+- `tac myfile` wil do the same as cat but in reverse order.
+
+## grep
+"global/regular expression/print"
+- `grep filename mydir` will search for a file that contains "filename" (in the name or content) in the directory "mydir".
+- `grep -R filename mydir` will search for a file that contains "filename" in the directory "mydir" and its sub directories (recursively).
+- `grep hello ./myfile` will search for the word "hello" in the file "myfile".
+- `grep -i ./myfile` will search for the word "hello" case-insensitive ("HELLO", "Hello", ...) in the file "myfile".
+- `ps aux | grep ssh | grep -v grep` will search in the processes (`ps` displays **p**rocess **s**tatus) and display all lines that contain "ssh" but will exclude lines that contain the word "grep".
+- `grep -l hello mydir/` will search for the word "hello" in the directory "dir" but will only display the filename and not the line, that contains "hello".
+- `grep -A3 myconfig configfile` will displays the line that contains the word "myconfig" and the 3 lines after it, in the file "configfile".
+- `grep -B3 myconfig configfile` will displays the line that contains the word "myconfig" and the 3 lines before it, in the file "configfile".
+
+## regular expressions
+- "regex" (short for regular expression) can look like globbing but it's different.
+- regex only works in applications that support it (grep, vim, awk, sed)
+- it's a best practice to put regex always in single quotes.
+
+### atoms
+regex consist of so called atoms:
+- a singe character.
+- a range of characters.
+- a dot for any character.
+- a class like [[:alpha:]] (alphabetic characters), [[:upper:]] (for upper case alphabetic characters) or [[:alnum:]] for alphanumeric charctes.
+
+### positions
+- `^` beginning og the line.
+- `$` end og the line.
+- `\<` beginning of the word.
+- `\>` end of the word.
+- `\A` start of the file.
+- `\A` end of the file.
+
+### repetitions
+- `{n}` n times
+- `{n,}` n times minimum
+- `{,n}` n times maximum
+- `{n,o}` between n and o times
+- `*` zero or more times
+- `+` one or more times
+- `?` zero or one time
+
+examples:
+- `grep '^abc' myfile` will look for "abc" at the beginning of any line in the file "myfile".
+- `grep 'abc$' myfile` will look for "abc" at the end of any line in the file "myfile".
+- `grep 'a.c' myfile` will look for all comabinations of "a", any letter and "b" (like "aBb") in the file "myfile".
+
+## cut
+cut cuts out selected portion of each line of a file
+
+## sort
+sorts or merges lines of files.
+
+## tr
+"translate"
+translates characters.
+
+## sed
+"stream editor"
+sed manipulates input text. 
+
+## awk
+awk manipulates input text in a very advanced way. awk is considered a programming language.
